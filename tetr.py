@@ -6,6 +6,10 @@ borders = None
 fig_downed = False
 score = 0
 
+def resource_path(relative):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, relative)
+    return os.path.join(relative)
 
 def cor_image(image):
     for i in range(25, image.get_size()[1], 50):
@@ -42,7 +46,7 @@ def load_rand_fig(name):
         (551, 421, 150, 100), (551, 527, 150, 100), (551, 633, 150, 100)
     ]
 
-    fullname = name  # os.path.join('data', name)
+    fullname = resource_path(name)  # os.path.join('data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -60,7 +64,7 @@ def load_rand_fig(name):
 
 
 def load_image(name, colorkey=None):
-    fullname = name  # os.path.join('data', name)
+    fullname = resource_path(name)  # os.path.join('data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -428,7 +432,7 @@ def record_screen():
 
     screen.fill((0, 128, 128), screen.get_rect())
 
-    f_rec = open("records.txt", "rt")
+    f_rec = open(resource_path("records.txt"), "rt")
 
     for s in f_rec.readlines():
         s = s.rstrip()
@@ -543,7 +547,7 @@ def main_game(hard_level):
                                         fl_r = False
                                     elif event.key == pygame.K_RETURN:  # клавиша Enter
                                         # записываем в таблицу рекордов
-                                        f_rec = open('records.txt', 'rt')
+                                        f_rec = open(resource_path('records.txt'), 'rt')
 
                                         # считываем записи
                                         recs = []
@@ -557,7 +561,7 @@ def main_game(hard_level):
                                         recs.sort(key=lambda x: x[1], reverse=True)
 
                                         # записываем
-                                        f_rec = open('records.txt', 'wt')
+                                        f_rec = open(resource_path('records.txt'), 'wt')
                                         for s in recs:
                                             f_rec.write(';'.join(s) + '\n')
                                         f_rec.close()
